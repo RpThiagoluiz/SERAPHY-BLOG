@@ -1,14 +1,10 @@
 import styled, { css } from 'styled-components';
 import { getThemeColor, hexToRgba } from '../styles/themeColors';
+import { typographyVariants } from '../styles';
 import type { ThemeColorPath } from '../styles/themeColors';
+import type { TypographyVariantKey } from '../styles';
 
-export type TypographyVariant =
-  | 'h1'
-  | 'h2'
-  | 'h3'
-  | 'bodyLarge'
-  | 'bodySmall'
-  | 'caption';
+export type TypographyVariant = TypographyVariantKey;
 
 export type { ThemeColorPath };
 
@@ -20,48 +16,14 @@ export interface TypographyProps {
   children?: React.ReactNode;
 }
 
-const variantStyles = {
-  h1: css`
-    font-size: ${(props) => props.theme.typography.h1.size};
-    font-weight: ${(props) => props.theme.typography.h1.weight};
-    line-height: ${(props) => props.theme.typography.h1.lineHeight};
-  `,
-  h2: css`
-    font-size: ${(props) => props.theme.typography.h2.size};
-    font-weight: ${(props) => props.theme.typography.h2.weight};
-    line-height: ${(props) => props.theme.typography.h2.lineHeight};
-  `,
-  h3: css`
-    font-size: ${(props) => props.theme.typography.h3.size};
-    font-weight: ${(props) => props.theme.typography.h3.weight};
-    line-height: ${(props) => props.theme.typography.h3.lineHeight};
-  `,
-  bodyLarge: css`
-    font-size: ${(props) => props.theme.typography.bodyLarge.size};
-    font-weight: ${(props) => props.theme.typography.bodyLarge.weight};
-    line-height: ${(props) => props.theme.typography.bodyLarge.lineHeight};
-  `,
-  bodySmall: css`
-    font-size: ${(props) => props.theme.typography.bodySmall.size};
-    font-weight: ${(props) => props.theme.typography.bodySmall.weight};
-    line-height: ${(props) => props.theme.typography.bodySmall.lineHeight};
-  `,
-  caption: css`
-    font-size: ${(props) => props.theme.typography.caption.size};
-    font-weight: ${(props) => props.theme.typography.caption.weight};
-    line-height: ${(props) => props.theme.typography.caption.lineHeight};
-  `,
-};
-
 const StyledTypography = styled.span<{
   $variant: TypographyVariant;
   $color?: string;
   $opacity?: number;
 }>`
-  font-family: ${(props) => props.theme.typography.fontFamily};
   margin: 0;
 
-  ${(props) => variantStyles[props.$variant]}
+  ${(props) => typographyVariants[props.$variant]}
 
   ${(props) => {
     if (!props.$color) return '';
@@ -81,6 +43,7 @@ const defaultElementMap: Record<TypographyVariant, React.ElementType> = {
   h1: 'h1',
   h2: 'h2',
   h3: 'h3',
+  bodyLargeSemiBold: 'p',
   bodyLarge: 'p',
   bodySmall: 'p',
   caption: 'span',
