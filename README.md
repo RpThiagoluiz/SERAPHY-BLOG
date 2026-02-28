@@ -2,10 +2,10 @@
 
 ## Docker
 
-Para subir a aplicação com Docker:
+To run the application with Docker:
 
 ```bash
 docker compose up -d --build
 ```
 
-A aplicação estará disponível em: **http://localhost:5173**
+The application will be available at: **http://localhost:5173**
