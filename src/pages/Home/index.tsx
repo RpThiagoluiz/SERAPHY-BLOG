@@ -1,8 +1,16 @@
 import styled from 'styled-components';
-import { Search, ArrowLeft, Filter } from 'lucide-react';
+import {
+  Search,
+  ArrowLeft,
+  Filter,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
+} from 'lucide-react';
 import { Typography } from '../../components/Typography';
 import { Icon } from '../../components/Icon';
 import { Button } from '../../components/Button';
+import { SortItem } from '../../components/SortItem';
 import { themeColors } from '../../styles';
 
 const HomeContent = styled.div`
@@ -22,6 +30,14 @@ const ButtonDemo = styled.div`
   flex-wrap: wrap;
   align-items: center;
   gap: ${(props) => props.theme.spacing.lg};
+`;
+
+const SortDemo = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: ${(props) => props.theme.spacing.lg};
+  margin-top: 200px;
 `;
 
 const Home = () => {
@@ -46,6 +62,14 @@ const Home = () => {
           Back
         </Button>
       </ButtonDemo>
+
+      <SortDemo>
+        <SortItem label="Newest first" icon={ArrowUpDown} />
+        <SortItem label="Oldest first" icon={ArrowUpDown} />
+        <SortItem label="Ascending" icon={ArrowUp} />
+        <SortItem label="Descending" icon={ArrowDown} />
+        <SortItem label="Sem ícone" />
+      </SortDemo>
     </HomeContent>
   );
 };

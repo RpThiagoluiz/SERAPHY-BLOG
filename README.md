@@ -21,6 +21,11 @@ The application will be available at: **http://localhost:5173**
   <figcaption>Icons variants</figcaption>
 </figure>
 <figure>
-  <img src="docs/images/buttons.png" alt="Icons variants" width="600" />
+  <img src="docs/images/buttons.png" alt="Buttons variants" width="600" />
   <figcaption>Buttons variants</figcaption>
+</figure
+
+<figure>
+  <img src="docs/images/sortItem.png" alt="Sort Item variants" width="600" />
+  <figcaption>Sort Item variants</figcaption>
 </figure
