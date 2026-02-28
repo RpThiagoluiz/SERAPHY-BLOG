@@ -29,3 +29,8 @@ The application will be available at: **http://localhost:5173**
   <img src="docs/images/sortItem.png" alt="Sort Item variants" width="600" />
   <figcaption>Sort Item variants</figcaption>
 </figure
+
+<figure>
+  <img src="docs/images/filterItem.png" alt="Filter Item variants" width="600" />
+  <figcaption>Filter Item variants</figcaption>
+</figure
