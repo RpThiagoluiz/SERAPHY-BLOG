@@ -19,6 +19,10 @@ src/
 ├── routes.tsx   # Register page routers
 └── App.tsx
 ├── services/    # Axios configuration and API calls
-├── styles/      # GlobalStyles and Theme (color/spacing variables)
+├── styles/      # styled-components base
+│   ├── theme.ts   # Design tokens (colors, typography, spacing, breakpoints)
+│   ├── global.ts  # GlobalStyle (reset, base typography)
+│   ├── media.ts   # Mobile-first media queries
+│   └── index.ts   # Barrel exports
 └── utils/       # Helper functions and formatters
 ```
