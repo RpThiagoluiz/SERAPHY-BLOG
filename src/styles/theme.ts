@@ -32,6 +32,7 @@ export const theme = {
     h1: { size: '3.5rem', weight: 700, lineHeight: '130%' },
     h2: { size: '2.25rem', weight: 700, lineHeight: '130%' },
     h3: { size: '1.25rem', weight: 700, lineHeight: '130%' },
+    bodyLargeSemiBold: { size: '1rem', weight: 600, lineHeight: '150%' },
     bodyLarge: { size: '1rem', weight: 400, lineHeight: '150%' },
     bodySmall: { size: '0.875rem', weight: 400, lineHeight: '150%' },
     caption: { size: '0.75rem', weight: 400, lineHeight: '130%' },
@@ -49,6 +50,11 @@ export const theme = {
     sm: '4px',
     md: '8px',
     lg: '12px',
+    pill: '9999px',
+  },
+  transition: {
+    interactive:
+      'background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease',
   },
 } as const;
 

@@ -54,7 +54,7 @@ export const GlobalStyle = createGlobalStyle`
     color: ${(props) => props.theme.colors.secondary.medium};
     font-weight: 500;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: ${(props) => props.theme.transition.interactive};
 
     &:hover {
       color: ${(props) => props.theme.colors.secondary.dark};
