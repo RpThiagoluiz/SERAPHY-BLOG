@@ -11,6 +11,7 @@ Before creating the first component, the house needs a solid foundation.
 - **Dockerization**: Create the Dockerfile and docker-compose.yml.
   - _Why now?_ To ensure anyone who runs your project sees exactly what you see, without local node_modules issues.
 - **Theme & Global Styles**: Create the styled-components theme file (colors, design fonts, breakpoints for mobile-first).
+- **Ui Components**: Create with styled-components some components for initialize integrate (Button, Filter,Icon, Sort, Card, Header, Footer, etc).
 
 ---
 
