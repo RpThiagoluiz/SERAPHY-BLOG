@@ -1,5 +1,11 @@
 # Seraphy Blog
 
+## Design System
+
+### Typography
+
+![Typography variants](docs/images/typography.png)
+
 ## Docker
 
 To run the application with Docker:

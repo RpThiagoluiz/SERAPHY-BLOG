@@ -1,17 +1,42 @@
-import { Link } from 'react-router-dom';
-import { Button } from '../../components/Button';
+import styled from 'styled-components';
+import { Typography } from '../../components/Typography';
+import { themeColors } from '../../styles';
+
+const HomeContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${(props) => props.theme.spacing.md};
+`;
 
 const Home = () => {
   return (
-    <div>
-      <h1>Seraphy Blog - Home</h1>
-      <p>
-        <Link to="/post/1">Ver Post #1</Link>
+    <HomeContent>
+      <Typography variant="h1" color={themeColors.primary.dark}>
+        Seraphy Blog | This is H1 variant - Dark Color
+      </Typography>
+
+      <Typography variant="h2" color={themeColors.neutrals.extraDark}>
+        This is H2 variant - Extra Dark Color
+      </Typography>
+
+      <Typography variant="h3" color={themeColors.secondary.base}>
+        This is H3 variant - Secondary Color
+      </Typography>
+
+      <Typography variant="bodyLarge">
+        This is Body Large variant - Default Color Blog
         {' · '}
-        <Link to="/post/42">Ver Post #42</Link>
-        <Button onClick={() => alert('Button clicked')}>Click me</Button>
-      </p>
-    </div>
+        This is Body Large variant
+      </Typography>
+
+      <Typography variant="bodySmall" color={themeColors.neutrals.dark}>
+        This is bodySmall variant - Dark Color
+      </Typography>
+
+      <Typography variant="caption" color={themeColors.accent.base}>
+        This is caption variant - Accent Color
+      </Typography>
+    </HomeContent>
   );
 };
 

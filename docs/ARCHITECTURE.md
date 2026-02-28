@@ -20,9 +20,11 @@ src/
 └── App.tsx
 ├── services/    # Axios configuration and API calls
 ├── styles/      # styled-components base
-│   ├── theme.ts   # Design tokens (colors, typography, spacing, breakpoints)
-│   ├── global.ts  # GlobalStyle (reset, base typography)
-│   ├── media.ts   # Mobile-first media queries
-│   └── index.ts   # Barrel exports
+│   ├── theme.ts         # Design tokens (colors, typography, spacing, breakpoints)
+│   ├── themeColors.ts   # Color helper with autocomplete (themeColors, getThemeColor)
+│   ├── mediaBreakPoints.ts  # Breakpoint values
+│   ├── media.ts         # Mobile-first media queries
+│   ├── global.ts       # GlobalStyle (reset, base typography)
+│   └── index.ts        # Barrel exports
 └── utils/       # Helper functions and formatters
 ```
