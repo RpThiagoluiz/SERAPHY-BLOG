@@ -12,6 +12,12 @@ src/
 ├── context/     # Context API providers
 ├── hooks/       # Custom hooks (e.g., usePosts, useAuthor)
 ├── pages/       # Main views (Home/Feed and PostDetail)
+│   ├── Home/
+│   │   └── index.tsx
+│   └── PostDetail/
+│       └── index.tsx
+├── routes.tsx   # Register page routers
+└── App.tsx
 ├── services/    # Axios configuration and API calls
 ├── styles/      # GlobalStyles and Theme (color/spacing variables)
 └── utils/       # Helper functions and formatters
