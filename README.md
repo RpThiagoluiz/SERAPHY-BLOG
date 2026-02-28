@@ -34,3 +34,8 @@ The application will be available at: **http://localhost:5173**
   <img src="docs/images/filterItem.png" alt="Filter Item variants" width="600" />
   <figcaption>Filter Item variants</figcaption>
 </figure
+
+<figure>
+  <img src="docs/images/searchInputForm.png" alt="Search Input Form" width="600" />
+  <figcaption>Search Input Form</figcaption>
+</figure
