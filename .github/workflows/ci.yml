@@ -34,4 +34,4 @@ jobs:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Build Docker Image
-        run: docker build -t dws-blog .
+        run: docker build -t seraphy-blog .
