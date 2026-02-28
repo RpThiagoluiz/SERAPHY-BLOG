@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Button } from '../../components/Button';
 
 const Home = () => {
   return (
@@ -8,6 +9,7 @@ const Home = () => {
         <Link to="/post/1">Ver Post #1</Link>
         {' · '}
         <Link to="/post/42">Ver Post #42</Link>
+        <Button onClick={() => alert('Button clicked')}>Click me</Button>
       </p>
     </div>
   );
