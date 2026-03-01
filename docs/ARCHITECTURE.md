@@ -32,8 +32,9 @@ src/
 ├── routes.tsx      # Register page routers
 ├── test/           # Test utilities and shared mocks
 │   ├── mocks/      # Reusable fixtures and hook mocks
-│   │   ├── fixtures.ts  # mockPost, mockCategory, mockAuthor
-│   │   ├── homeMocks.ts # vi.mock for usePosts, useCategories, useAuthors
+│   │   ├── fixtures.ts  # mockPost, mockPost2, mockCategory, mockAuthor
+│   │   ├── homeMocks.ts # vi.mock for Home (usePosts, useCategories, useAuthors)
+│   │   ├── postDetailsMocks.ts # vi.mock for PostDetails (usePosts, usePostById, useAuthors, useAuthorById)
 │   │   └── index.ts    # Barrel exports
 │   └── setup.ts    # Vitest setup (matchMedia, jest-dom)
 ├── App.tsx
@@ -67,14 +68,14 @@ src/components/
 │   ├── Typography.tsx
 │   └── index.ts
 ├── molecules/       # Combinations of atoms into functional units
+│   ├── ImageWithFallback/   # Shared image + placeholder fallback (PostCard, PostDetails)
 │   ├── InputWithBackAndClear.tsx
 │   ├── SearchInputForm.tsx
 │   └── index.ts
 ├── organisms/       # Complex UI sections composed of atoms and molecules
 │   ├── PostCard/
-│   │   ├── index.tsx
-│   │   ├── types.ts
-│   │   └── styles.ts
+│   ├── PostCardSkeleton/
+│   ├── PostDetailsSkeleton/
 │   └── index.ts
 └── index.ts         # Main barrel (re-exports all layers)
 ```
@@ -146,8 +147,9 @@ Shared mocks live in `src/test/mocks/` for reuse across Home, PostDetails, and o
 
 | File | Purpose |
 |------|---------|
-| **`fixtures.ts`** | Mock data only: `mockPost`, `mockCategory`, `mockAuthor`. Import when you need data without hook mocks. |
+| **`fixtures.ts`** | Mock data only: `mockPost`, `mockPost2`, `mockCategory`, `mockAuthor`. Import when you need data without hook mocks. |
 | **`homeMocks.ts`** | `vi.mock` for `usePosts`, `useCategories`, `useAuthors`, `useErrorNotifications`. Re-exports fixtures. Import before hooks for tests that use the Home page. |
+| **`postDetailsMocks.ts`** | `vi.mock` for `usePosts`, `usePostById`, `useAuthors`, `useAuthorById`. Re-exports fixtures. Import before hooks for PostDetails tests. |
 | **`index.ts`** | Barrel exports for convenience. |
 
 **Usage example (Home.test.tsx):**
@@ -158,6 +160,15 @@ import { mockPost, mockCategory, mockAuthor } from '../../test/mocks/fixtures';
 import { usePosts } from '../../hooks/usePosts';
 import { useCategories } from '../../hooks/useCategories';
 import { useAuthors } from '../../hooks/useAuthors';
+```
+
+**Usage example (PostDetails.test.tsx):**
+
+```ts
+import '../../test/mocks/postDetailsMocks';
+import { mockPost, mockPost2 } from '../../test/mocks/fixtures';
+import { usePosts, usePostById } from '../../hooks/usePosts';
+import { useAuthorById } from '../../hooks/useAuthors';
 ```
 
 **Usage example (other tests needing only data):**

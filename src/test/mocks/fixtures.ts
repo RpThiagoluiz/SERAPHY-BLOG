@@ -26,3 +26,16 @@ export const mockAuthor: Author = {
   name: 'Jane Doe',
   profilePicture: '',
 };
+
+/** Second post for Latest articles in PostDetails tests */
+export const mockPost2: Post = {
+  id: 'post-2',
+  title: 'Another Article',
+  content: 'Content for the second post.',
+  thumbnail_url: 'https://example.com/thumb2.jpg',
+  authorId: 'author-1',
+  createdAt: '2026-01-10T10:00:00Z',
+  updatedAt: '2026-01-10T10:00:00Z',
+  categories: [{ id: 'cat-1', name: 'Technology', postId: 'post-2' }],
+  author: { id: 'author-1', name: 'Jane Doe', profilePicture: '' },
+};
