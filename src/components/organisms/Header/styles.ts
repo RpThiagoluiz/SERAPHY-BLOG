@@ -16,8 +16,7 @@ export const StyledMain = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: ${(props) => props.theme.spacing.md}
-    ${(props) => props.theme.spacing.lg};
+  padding: ${(props) => props.theme.spacing.md};
   gap: ${(props) => props.theme.spacing.md};
 `;
 
@@ -91,4 +90,28 @@ export const StyledSearchFormWrapper = styled.div`
   ${media.md`
     display: block;
   `}
+`;
+
+export const StyledSearchOverlay = styled.div<{ $isOpen: boolean }>`
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  background-color: ${(props) => props.theme.colors.neutrals.lightest};
+  transform: translateX(${(props) => (props.$isOpen ? '0' : '-100%')});
+  transition: transform 0.3s ease-in-out;
+  overflow: hidden;
+  pointer-events: ${(props) => (props.$isOpen ? 'auto' : 'none')};
+
+  ${media.md`
+    display: none;
+  `}
+`;
+
+export const StyledSearchOverlayContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: ${(props) => props.theme.spacing.md};
+  border-bottom: 1px solid ${(props) => props.theme.colors.neutrals.extraLight};
 `;
