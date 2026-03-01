@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
-import { typographyVariants } from '../styles';
-import { hexToRgba } from '../styles';
+import { typographyVariants, hexToRgba } from '../../styles';
 
 const PADDING_VERTICAL = 12;
 const PADDING_HORIZONTAL = 8;

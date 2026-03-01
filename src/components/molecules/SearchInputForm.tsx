@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { Search } from 'lucide-react';
-import { Icon } from './Icon';
-import { Input } from './Input';
-import { themeColors } from '../styles';
+import { Icon } from '../atoms/Icon';
+import { Input } from '../atoms/Input';
+import { themeColors } from '../../styles';
 
 export interface SearchInputFormProps extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,

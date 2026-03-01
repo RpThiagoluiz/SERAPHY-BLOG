@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { typographyVariants } from '../styles';
+import { typographyVariants } from '../../styles';
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 

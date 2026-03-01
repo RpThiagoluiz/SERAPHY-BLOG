@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import type { LucideIcon } from 'lucide-react';
-import { typographyVariants } from '../styles';
+import { typographyVariants } from '../../styles';
 
 const ICON_SIZE = 16;
 const GAP = 8;

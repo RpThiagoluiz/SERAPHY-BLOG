@@ -8,15 +8,21 @@ import {
   ArrowUp,
   ArrowDown,
 } from 'lucide-react';
-import { Typography } from '../../components/Typography';
-import { Icon } from '../../components/Icon';
-import { Button } from '../../components/Button';
-import { Input } from '../../components/Input';
-import { InputWithBackAndClear } from '../../components/InputWithBackAndClear';
-import { SortItem } from '../../components/SortItem';
-import { FilterItem } from '../../components/FilterItem';
-import { Badge } from '../../components/Badge';
-import { SearchInputForm } from '../../components/SearchInputForm';
+import {
+  Typography,
+  Icon,
+  Button,
+  Input,
+  InputWithBackAndClear,
+  SortItem,
+  FilterItem,
+  Badge,
+  SearchInputForm,
+  PostCard,
+  Dropdown,
+  SelectionChip,
+} from '../../components';
+import { postService } from '../../api/services';
 import { themeColors } from '../../styles';
 
 const HomeContent = styled.div`
@@ -66,6 +72,12 @@ const FilterDemo = styled.div`
   margin-top: 200px;
 `;
 
+const DropdownDemo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${(props) => props.theme.spacing.md};
+`;
+
 const InputDemo = styled.div`
   display: flex;
   flex-direction: column;
@@ -88,12 +100,28 @@ const SearchDemo = styled.div`
   margin: 200px 60px;
 `;
 
+const PostsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 314px);
+  gap: 24px;
+`;
+
+const DROPDOWN_OPTIONS = [
+  { id: 'cat1', label: 'Category 1' },
+  { id: 'cat2', label: 'Category 2' },
+  { id: 'cat3', label: 'Category 3' },
+  { id: 'cat4', label: 'Category 4' },
+  { id: 'cat5', label: 'Category 5' },
+];
+
 const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     'Category 1',
   );
+  const [dropdownSelected, setDropdownSelected] = useState<string[]>(['cat1']);
   const [searchValue, setSearchValue] = useState('');
   const [backAndClearValue, setBackAndClearValue] = useState('');
+  const { data: posts = [], isLoading } = postService.useGetPosts();
 
   return (
     <HomeContent>
@@ -192,6 +220,32 @@ const Home = () => {
         <SortItem label="Sem ícone" />
       </SortDemo>
 
+      <DropdownDemo>
+        <Typography variant="h2" color={themeColors.primary.dark}>
+          Dropdown
+        </Typography>
+        <Dropdown
+          label="Category"
+          options={DROPDOWN_OPTIONS}
+          selectedIds={dropdownSelected}
+          onSelect={(id) =>
+            setDropdownSelected((prev) =>
+              prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+            )
+          }
+        />
+        {dropdownSelected.length > 0 && (
+          <SelectionChip
+            label={dropdownSelected
+              .map(
+                (id) => DROPDOWN_OPTIONS.find((o) => o.id === id)?.label ?? '',
+              )
+              .join(', ')}
+            onRemove={() => setDropdownSelected([])}
+          />
+        )}
+      </DropdownDemo>
+
       <FilterDemo>
         <FilterItem
           label="Category 1"
@@ -209,6 +263,21 @@ const Home = () => {
           onClick={() => setSelectedCategory('Category 3')}
         />
       </FilterDemo>
+
+      <Typography variant="h2" color={themeColors.primary.dark}>
+        Posts
+      </Typography>
+      {isLoading ? (
+        <Typography variant="bodySmall" color={themeColors.neutrals.medium}>
+          loading...
+        </Typography>
+      ) : (
+        <PostsGrid>
+          {posts.map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </PostsGrid>
+      )}
     </HomeContent>
   );
 };
