@@ -15,7 +15,21 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background-color: ${(props) => props.theme.colors.neutrals.lightest};
+    background: linear-gradient(
+      to top right,
+      color-mix(
+        in srgb,
+        ${(props) => props.theme.colors.accent.light} 10%,
+        ${(props) => props.theme.colors.neutrals.lightest}
+      ),
+      ${(props) => props.theme.colors.neutrals.lightest},
+      color-mix(
+        in srgb,
+        ${(props) => props.theme.colors.secondary.light} 10%,
+        ${(props) => props.theme.colors.neutrals.lightest}
+      )
+    );
+    background-attachment: fixed;
     color: ${(props) => props.theme.colors.neutrals.darkest};
     font-family: ${(props) => props.theme.typography.fontFamily};
     min-height: 100vh;
@@ -23,6 +37,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   #root {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
     padding: ${(props) => props.theme.spacing.md};
   }
