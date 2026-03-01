@@ -1,5 +1,9 @@
 export { Badge } from './Badge';
 export { Button } from './Button';
+export { DropdownOption } from './DropdownOption';
+export type { DropdownOptionProps } from './DropdownOption';
+export { DropdownTrigger } from './DropdownTrigger';
+export type { DropdownTriggerProps } from './DropdownTrigger';
 export type { ButtonVariant, ButtonProps } from './Button';
 export { FilterItem } from './FilterItem';
 export type { FilterItemProps } from './FilterItem';
