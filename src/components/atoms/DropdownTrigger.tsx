@@ -45,6 +45,7 @@ const StyledTrigger = styled.button<{ $isOpen: boolean }>`
   transition: ${(props) => props.theme.transition.interactive};
   font-size: 12px;
   font-weight: 700;
+  border: 1px solid ${(props) => props.theme.colors.secondary.medium};
 
   ${defaultStyles}
   ${hoverSelectedStyles}
