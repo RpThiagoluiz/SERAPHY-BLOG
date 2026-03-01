@@ -32,7 +32,7 @@ export const SkeletonBack = styled.div`
 export const SkeletonHeader = styled.header`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   gap: ${(props) => props.theme.spacing.lg};
   width: 100%;
 `;
@@ -40,7 +40,7 @@ export const SkeletonHeader = styled.header`
 export const SkeletonTitle = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   gap: ${(props) => props.theme.spacing.sm};
   width: 100%;
 `;
