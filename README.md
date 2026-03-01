@@ -1,6 +1,52 @@
 # Seraphy Blog
 
-## Docker
+A modern blog application built with React, featuring post listing, search, filtering, and detailed post views.
+
+## Tech Stack
+
+- **React 19** + **TypeScript**
+- **Vite** – Build tool
+- **React Router** – Client-side routing
+- **TanStack React Query** – Server state management
+- **Styled Components** – Styling
+- **Axios** – HTTP client
+
+## Prerequisites
+
+- Node.js 20+
+- npm
+
+## Running Locally
+
+### Option 1: npm (recommended for development)
+
+1. Clone the repository and install dependencies:
+
+```bash
+npm install
+```
+
+2. Create a `.env` file based on the example:
+
+```bash
+cp .env.example .env
+```
+
+3. Set your API URL in `.env`:
+
+```
+VITE_API_URL=https://your-api-url.com
+```
+
+4. Start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at **http://localhost:5173**
+
+### Option 2: Docker (Recommended)
 
 To run the application with Docker:
 
@@ -8,49 +54,31 @@ To run the application with Docker:
 docker compose up -d --build
 ```
 
-The application will be available at: **http://localhost:5173**
+The application will be available at **http://localhost:5173**
+
+## Available Scripts
+
+| Command           | Description                      |
+| ----------------- | -------------------------------- |
+| `npm run dev`     | Start development server         |
+| `npm run build`   | Build for production             |
+| `npm run preview` | Preview production build locally |
+| `npm run lint`    | Run ESLint                       |
+| `npm run test`    | Run tests                        |
+| `npm run format`  | Format code with Prettier        |
+
+## Why React Query?
+
+We use **TanStack React Query** (formerly React Query) for server state management because it provides:
+
+- **Automatic caching** – Reduces redundant API calls and improves performance
+- **Background refetching** – Keeps data fresh without manual refresh
+- **Loading and error states** – Built-in handling for async operations
+- **Optimistic updates** – Better UX when mutating data
+- **DevTools** – Easy debugging of cache and request states
+
+This allows us to focus on UI logic while React Query handles fetching, caching, and synchronization with the server.
 
 ## Design System
 
-<figure>
-  <img src="docs/images/typography.png" alt="Typography variants" width="600" />
-  <figcaption>Typography variants</figcaption>
-</figure>
-<figure>
-  <img src="docs/images/icons.png" alt="Icons variants" width="600" />
-  <figcaption>Icons variants</figcaption>
-</figure>
-<figure>
-  <img src="docs/images/buttons.png" alt="Buttons variants" width="600" />
-  <figcaption>Buttons variants</figcaption>
-</figure
-
-<figure>
-  <img src="docs/images/sortItem.png" alt="Sort Item variants" width="600" />
-  <figcaption>Sort Item variants</figcaption>
-</figure
-
-<figure>
-  <img src="docs/images/filterItem.png" alt="Filter Item variants" width="600" />
-  <figcaption>Filter Item variants</figcaption>
-</figure
-
-<figure>
-  <img src="docs/images/searchInputForm.png" alt="Search Input Form" width="600" />
-  <figcaption>Search Input Form</figcaption>
-</figure
-
-<figure>
-  <img src="docs/images/badge.png" alt="Badge component" width="600" />
-  <figcaption>Badge</figcaption>
-</figure
-
-<figure>
-  <img src="docs/images/dropDown.png" alt="Dropdown Selector" width="600" />
-  <figcaption>Drop Down</figcaption>
-</figure
-
-<figure>
-  <img src="docs/images/card.png" alt="Card component" width="600" />
-  <figcaption>Card</figcaption>
-</figure
+See [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) for component documentation and visual guidelines.
