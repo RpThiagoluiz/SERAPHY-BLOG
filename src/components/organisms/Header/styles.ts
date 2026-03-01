@@ -8,7 +8,7 @@ export const StyledHeader = styled.header`
   margin-left: calc(-1 * ${(props) => props.theme.spacing.md});
   margin-right: calc(-1 * ${(props) => props.theme.spacing.md});
   width: calc(100% + 2 * ${(props) => props.theme.spacing.md});
-  background-color: ${(props) => props.theme.colors.neutrals.lightest};
+  background-color: transparent;
   border-bottom: 2px solid ${(props) => props.theme.colors.neutrals.extraLight};
 `;
 
@@ -84,8 +84,7 @@ export const StyledSearchButton = styled.button`
 
 export const StyledSearchFormWrapper = styled.div`
   display: none;
-  min-width: 200px;
-  max-width: 320px;
+  min-width: 400px;
 
   ${media.md`
     display: block;
