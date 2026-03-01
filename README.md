@@ -41,6 +41,16 @@ The application will be available at: **http://localhost:5173**
 </figure
 
 <figure>
-  <img src="docs/images/badge.png" alt="Search Input Form" width="600" />
+  <img src="docs/images/badge.png" alt="Badge component" width="600" />
   <figcaption>Badge</figcaption>
+</figure
+
+<figure>
+  <img src="docs/images/dropDown.png" alt="Dropdown Selector" width="600" />
+  <figcaption>Drop Down</figcaption>
+</figure
+
+<figure>
+  <img src="docs/images/card.png" alt="Card component" width="600" />
+  <figcaption>Card</figcaption>
 </figure
