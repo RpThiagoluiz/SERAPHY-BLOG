@@ -17,6 +17,8 @@ import { SortItem } from '../../components/SortItem';
 import { FilterItem } from '../../components/FilterItem';
 import { Badge } from '../../components/Badge';
 import { SearchInputForm } from '../../components/SearchInputForm';
+import { PostCard } from '../../components/PostCard';
+import { postService } from '../../api/services';
 import { themeColors } from '../../styles';
 
 const HomeContent = styled.div`
@@ -88,12 +90,19 @@ const SearchDemo = styled.div`
   margin: 200px 60px;
 `;
 
+const PostsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 314px);
+  gap: 24px;
+`;
+
 const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     'Category 1',
   );
   const [searchValue, setSearchValue] = useState('');
   const [backAndClearValue, setBackAndClearValue] = useState('');
+  const { data: posts = [], isLoading } = postService.useGetPosts();
 
   return (
     <HomeContent>
@@ -209,6 +218,21 @@ const Home = () => {
           onClick={() => setSelectedCategory('Category 3')}
         />
       </FilterDemo>
+
+      <Typography variant="h2" color={themeColors.primary.dark}>
+        Posts
+      </Typography>
+      {isLoading ? (
+        <Typography variant="bodySmall" color={themeColors.neutrals.medium}>
+          loading...
+        </Typography>
+      ) : (
+        <PostsGrid>
+          {posts.map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </PostsGrid>
+      )}
     </HomeContent>
   );
 };
