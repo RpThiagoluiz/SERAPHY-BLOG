@@ -11,6 +11,7 @@ export { Icon } from './Icon';
 export type { IconSize, IconProps, ThemeColorPath } from './Icon';
 export { Input } from './Input';
 export type { InputProps } from './Input';
+export { Skeleton } from './Skeleton';
 export { SortItem } from './SortItem';
 export type { SortItemProps, SortOrder } from './SortItem';
 export { Typography } from './Typography';
