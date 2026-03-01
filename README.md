@@ -1,73 +1,84 @@
-# React + TypeScript + Vite
+# Seraphy Blog
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern blog application built with React, featuring post listing, search, filtering, and detailed post views.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** + **TypeScript**
+- **Vite** – Build tool
+- **React Router** – Client-side routing
+- **TanStack React Query** – Server state management
+- **Styled Components** – Styling
+- **Axios** – HTTP client
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js 20+
+- npm
 
-## Expanding the ESLint configuration
+## Running Locally
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Option 1: npm (recommended for development)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. Clone the repository and install dependencies:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Create a `.env` file based on the example:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env
 ```
+
+3. Set your API URL in `.env`:
+
+```
+VITE_API_URL=https://your-api-url.com
+```
+
+4. Start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at **http://localhost:5173**
+
+### Option 2: Docker (Recommended)
+
+To run the application with Docker:
+
+```bash
+docker compose up -d --build
+```
+
+The application will be available at **http://localhost:5173**
+
+## Available Scripts
+
+| Command           | Description                      |
+| ----------------- | -------------------------------- |
+| `npm run dev`     | Start development server         |
+| `npm run build`   | Build for production             |
+| `npm run preview` | Preview production build locally |
+| `npm run lint`    | Run ESLint                       |
+| `npm run test`    | Run tests                        |
+| `npm run format`  | Format code with Prettier        |
+
+## Why React Query?
+
+We use **TanStack React Query** (formerly React Query) for server state management because it provides:
+
+- **Automatic caching** – Reduces redundant API calls and improves performance
+- **Background refetching** – Keeps data fresh without manual refresh
+- **Loading and error states** – Built-in handling for async operations
+- **Optimistic updates** – Better UX when mutating data
+- **DevTools** – Easy debugging of cache and request states
+
+This allows us to focus on UI logic while React Query handles fetching, caching, and synchronization with the server.
+
+## Design System
+
+See [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) for component documentation and visual guidelines.
