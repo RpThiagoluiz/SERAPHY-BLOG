@@ -1,284 +1,272 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import {
-  Search,
-  ArrowLeft,
-  Filter,
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown,
-} from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { SlidersHorizontal } from 'lucide-react';
 import {
   Typography,
-  Icon,
   Button,
-  Input,
-  InputWithBackAndClear,
-  SortItem,
-  FilterItem,
-  Badge,
-  SearchInputForm,
   PostCard,
   Dropdown,
+  SortItem,
   SelectionChip,
 } from '../../components';
-import { postService } from '../../api/services';
-import { themeColors } from '../../styles';
+import type { SortOrder } from '../../components';
+import type { Post } from '../../api/types/post.types';
+import { usePosts } from '../../hooks/usePosts';
+import { useCategories } from '../../hooks/useCategories';
+import { useAuthors } from '../../hooks/useAuthors';
+import { useErrorNotifications } from '../../hooks/useNotifications';
+import {
+  HomePage,
+  PageHeader,
+  ContentSection,
+  FilterBar,
+  FilterBarChips,
+  HomeLayout,
+  Sidebar,
+  SidebarTitle,
+  FilterSection,
+  FilterSectionTitle,
+  FilterItemsList,
+  SidebarFilterItem,
+  MainContent,
+  SortRow,
+  PostsList,
+  PostsGrid,
+  PostCardWrapper,
+  LoadingContainer,
+} from './styles';
 
-const HomeContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing.md};
-`;
+function filterAndSortPosts(
+  posts: Post[],
+  categoryIds: string[],
+  authorIds: string[],
+  sortOrder: SortOrder,
+): Post[] {
+  let filtered = posts;
 
-const IconDemo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${(props) => props.theme.spacing.lg};
-`;
+  if (categoryIds.length > 0) {
+    filtered = filtered.filter(
+      (p) =>
+        p.categories?.some((c) => c.id && categoryIds.includes(c.id)) ?? false,
+    );
+  }
 
-const ButtonDemo = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: ${(props) => props.theme.spacing.lg};
-`;
+  if (authorIds.length > 0) {
+    filtered = filtered.filter(
+      (p) => p.author?.id && authorIds.includes(p.author.id),
+    );
+  }
 
-const SortDemo = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: ${(props) => props.theme.spacing.lg};
-`;
+  const sorted = [...filtered].sort((a, b) => {
+    const dateA = new Date(a.createdAt ?? 0).getTime();
+    const dateB = new Date(b.createdAt ?? 0).getTime();
+    return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+  });
 
-const BadgeDemo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing.md};
-`;
-
-const BadgeDemoRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: ${(props) => props.theme.spacing.lg};
-`;
-
-const FilterDemo = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: ${(props) => props.theme.spacing.lg};
-  margin-top: 200px;
-`;
-
-const DropdownDemo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing.md};
-`;
-
-const InputDemo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing.md};
-  max-width: 400px;
-`;
-
-const InputWithBackAndClearDemo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing.md};
-  max-width: 400px;
-`;
-
-const SearchDemo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.theme.spacing.md};
-  max-width: 400px;
-  margin: 200px 60px;
-`;
-
-const PostsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 314px);
-  gap: 24px;
-`;
-
-const DROPDOWN_OPTIONS = [
-  { id: 'cat1', label: 'Category 1' },
-  { id: 'cat2', label: 'Category 2' },
-  { id: 'cat3', label: 'Category 3' },
-  { id: 'cat4', label: 'Category 4' },
-  { id: 'cat5', label: 'Category 5' },
-];
+  return sorted;
+}
 
 const Home = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(
-    'Category 1',
+  const [sortOrder, setSortOrder] = useState<SortOrder>('newest');
+
+  const [appliedCategoryIds, setAppliedCategoryIds] = useState<string[]>([]);
+  const [appliedAuthorIds, setAppliedAuthorIds] = useState<string[]>([]);
+
+  const [sidebarCategoryId, setSidebarCategoryId] = useState<string | null>(
+    null,
   );
-  const [dropdownSelected, setDropdownSelected] = useState<string[]>(['cat1']);
-  const [searchValue, setSearchValue] = useState('');
-  const [backAndClearValue, setBackAndClearValue] = useState('');
-  const { data: posts = [], isLoading } = postService.useGetPosts();
+  const [sidebarAuthorId, setSidebarAuthorId] = useState<string | null>(null);
+
+  const {
+    data: posts = [],
+    isLoading: postsLoading,
+    error: postsError,
+  } = usePosts();
+  const { data: categories = [], error: categoriesError } = useCategories();
+  const { data: authors = [], error: authorsError } = useAuthors();
+
+  const errorNotifications = useMemo(
+    () => [
+      [postsError, 'Failed to load posts. Please try again.'] as const,
+      [
+        categoriesError,
+        'Failed to load categories. Please try again.',
+      ] as const,
+      [authorsError, 'Failed to load authors. Please try again.'] as const,
+    ],
+    [postsError, categoriesError, authorsError],
+  );
+  useErrorNotifications(errorNotifications);
+
+  const categoryOptions = categories.map((c) => ({
+    id: c.id,
+    label: c.name ?? 'Category',
+  }));
+
+  const authorOptions = authors.map((a) => ({
+    id: a.id,
+    label: a.name ?? 'Author',
+  }));
+
+  const handleMobileCategorySelect = (id: string) => {
+    setAppliedCategoryIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  };
+
+  const handleMobileAuthorSelect = (id: string) => {
+    setAppliedAuthorIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  };
+
+  const handleApplyFilters = () => {
+    setAppliedCategoryIds(sidebarCategoryId ? [sidebarCategoryId] : []);
+    setAppliedAuthorIds(sidebarAuthorId ? [sidebarAuthorId] : []);
+  };
+
+  const filteredAndSortedPosts = filterAndSortPosts(
+    posts,
+    appliedCategoryIds,
+    appliedAuthorIds,
+    sortOrder,
+  );
+
+  const isLoading = postsLoading;
+  const hasError = postsError || categoriesError || authorsError;
 
   return (
-    <HomeContent>
-      <Typography variant="h1" color={themeColors.primary.dark}>
-        Seraphy Blog | This is H1 variant - Dark Color
-      </Typography>
-
-      <IconDemo>
-        <Icon
-          icon={Search}
-          size="md"
-          background="neutrals.darkest"
-          color="neutrals.lightest"
-          aria-label="Buscar"
-        />
-        <Icon
-          icon={Search}
-          size="sm"
-          ring
-          background="neutrals.darkest"
-          color="neutrals.lightest"
-          aria-label="Buscar"
-        />
-        <Icon icon={Search} size="sm" aria-label="Buscar" />
-        <Icon
-          icon={Search}
-          size="sm"
-          color={themeColors.neutrals.extraLight}
-          aria-label="Buscar"
-        />
-      </IconDemo>
-
-      <InputDemo>
-        <Typography variant="h2" color={themeColors.primary.dark}>
-          Input (componente UI reutilizável)
+    <HomePage>
+      <PageHeader as="header">
+        <Typography variant="h2" as="h1">
+          DWS Blog
         </Typography>
-        <Input placeholder="Digite seu email..." type="email" />
-        <Input placeholder="Digite seu nome..." />
-      </InputDemo>
-
-      <InputWithBackAndClearDemo>
-        <Typography variant="h2" color={themeColors.primary.dark}>
-          InputWithBackAndClear
-        </Typography>
-        <InputWithBackAndClear
-          value={backAndClearValue}
-          onChange={(e) => setBackAndClearValue(e.target.value)}
-          onBack={() => setBackAndClearValue('')}
-          placeholder="Digite algo..."
-        />
-      </InputWithBackAndClearDemo>
-
-      <SearchDemo>
-        <SearchInputForm
-          placeholder="Search"
-          onSearch={(value) => setSearchValue(value)}
-        />
-        {searchValue && (
-          <Typography
-            variant="bodySmall"
-            color={themeColors.neutrals.extraDark}
-          >
-            Última busca: &quot;{searchValue}&quot;
+        <SortRow>
+          <Typography variant="bodySmall" as="span">
+            Sort by:
           </Typography>
-        )}
-      </SearchDemo>
+          <SortItem value={sortOrder} onChange={setSortOrder} />
+        </SortRow>
+      </PageHeader>
 
-      <ButtonDemo>
-        <Button variant="primary">Apply filters</Button>
-        <Button variant="primary" icon={Filter}>
-          Apply filters
-        </Button>
-        <Button variant="secondary">Back</Button>
-        <Button variant="secondary" icon={ArrowLeft}>
-          Back
-        </Button>
-      </ButtonDemo>
-
-      <BadgeDemo>
-        <Typography variant="h2" color={themeColors.primary.dark}>
-          Badge
-        </Typography>
-        <BadgeDemoRow>
-          <Badge>Category</Badge>
-          <Badge>Category 1</Badge>
-          <Badge>Category 2</Badge>
-          <Badge>Category 3</Badge>
-        </BadgeDemoRow>
-      </BadgeDemo>
-
-      <SortDemo>
-        <SortItem label="Newest first" icon={ArrowUpDown} />
-        <SortItem label="Oldest first" icon={ArrowUpDown} />
-        <SortItem label="Ascending" icon={ArrowUp} />
-        <SortItem label="Descending" icon={ArrowDown} />
-        <SortItem label="Sem ícone" />
-      </SortDemo>
-
-      <DropdownDemo>
-        <Typography variant="h2" color={themeColors.primary.dark}>
-          Dropdown
-        </Typography>
-        <Dropdown
-          label="Category"
-          options={DROPDOWN_OPTIONS}
-          selectedIds={dropdownSelected}
-          onSelect={(id) =>
-            setDropdownSelected((prev) =>
-              prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-            )
-          }
-        />
-        {dropdownSelected.length > 0 && (
-          <SelectionChip
-            label={dropdownSelected
-              .map(
-                (id) => DROPDOWN_OPTIONS.find((o) => o.id === id)?.label ?? '',
-              )
-              .join(', ')}
-            onRemove={() => setDropdownSelected([])}
+      <ContentSection as="section" aria-label="Filters and posts list">
+        <FilterBar>
+          <Dropdown
+            label="Category"
+            options={categoryOptions}
+            selectedIds={appliedCategoryIds}
+            onSelect={handleMobileCategorySelect}
           />
+          <Dropdown
+            label="Author"
+            options={authorOptions}
+            selectedIds={appliedAuthorIds}
+            onSelect={handleMobileAuthorSelect}
+          />
+          <SortItem value={sortOrder} onChange={setSortOrder} />
+        </FilterBar>
+        {(appliedCategoryIds.length > 0 || appliedAuthorIds.length > 0) && (
+          <FilterBarChips>
+            <SelectionChip
+              label={[
+                ...appliedCategoryIds.map(
+                  (id) => categoryOptions.find((o) => o.id === id)?.label ?? '',
+                ),
+                ...appliedAuthorIds.map(
+                  (id) => authorOptions.find((o) => o.id === id)?.label ?? '',
+                ),
+              ]
+                .filter(Boolean)
+                .join(', ')}
+              onRemove={() => {
+                setAppliedCategoryIds([]);
+                setAppliedAuthorIds([]);
+              }}
+            />
+          </FilterBarChips>
         )}
-      </DropdownDemo>
 
-      <FilterDemo>
-        <FilterItem
-          label="Category 1"
-          isSelected={selectedCategory === 'Category 1'}
-          onClick={() => setSelectedCategory('Category 1')}
-        />
-        <FilterItem
-          label="Category 2"
-          isSelected={selectedCategory === 'Category 2'}
-          onClick={() => setSelectedCategory('Category 2')}
-        />
-        <FilterItem
-          label="Category 3"
-          isSelected={selectedCategory === 'Category 3'}
-          onClick={() => setSelectedCategory('Category 3')}
-        />
-      </FilterDemo>
+        <HomeLayout>
+          <Sidebar>
+            <SidebarTitle>
+              <SlidersHorizontal size={20} strokeWidth={2} aria-hidden />
+              <Typography variant="h3" as="h2">
+                Filters
+              </Typography>
+            </SidebarTitle>
+            <FilterSection>
+              <FilterSectionTitle>Category</FilterSectionTitle>
+              <FilterItemsList>
+                {categories.map((cat) => (
+                  <SidebarFilterItem
+                    key={cat.id}
+                    type="button"
+                    $isSelected={sidebarCategoryId === cat.id}
+                    onClick={() =>
+                      setSidebarCategoryId((prev) =>
+                        prev === cat.id ? null : cat.id,
+                      )
+                    }
+                  >
+                    {cat.name ?? 'Category'}
+                  </SidebarFilterItem>
+                ))}
+              </FilterItemsList>
+            </FilterSection>
+            <FilterSection>
+              <FilterSectionTitle>Author</FilterSectionTitle>
+              <FilterItemsList>
+                {authors.map((auth) => (
+                  <SidebarFilterItem
+                    key={auth.id}
+                    type="button"
+                    $isSelected={sidebarAuthorId === auth.id}
+                    onClick={() =>
+                      setSidebarAuthorId((prev) =>
+                        prev === auth.id ? null : auth.id,
+                      )
+                    }
+                  >
+                    {auth.name ?? 'Author'}
+                  </SidebarFilterItem>
+                ))}
+              </FilterItemsList>
+            </FilterSection>
+            <Button variant="primary" onClick={handleApplyFilters}>
+              Apply filters
+            </Button>
+          </Sidebar>
 
-      <Typography variant="h2" color={themeColors.primary.dark}>
-        Posts
-      </Typography>
-      {isLoading ? (
-        <Typography variant="bodySmall" color={themeColors.neutrals.medium}>
-          loading...
-        </Typography>
-      ) : (
-        <PostsGrid>
-          {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </PostsGrid>
-      )}
-    </HomeContent>
+          <MainContent as="section" aria-label="Posts list">
+            {isLoading ? (
+              <LoadingContainer>
+                <Typography variant="bodySmall">Loading...</Typography>
+              </LoadingContainer>
+            ) : hasError ? (
+              <LoadingContainer>
+                <Typography variant="bodySmall">
+                  Failed to load. Please check your connection.
+                </Typography>
+              </LoadingContainer>
+            ) : (
+              <>
+                <PostsList>
+                  {filteredAndSortedPosts.map((post) => (
+                    <PostCard key={post.id} post={post} />
+                  ))}
+                </PostsList>
+                <PostsGrid>
+                  {filteredAndSortedPosts.map((post) => (
+                    <PostCardWrapper key={post.id}>
+                      <PostCard post={post} />
+                    </PostCardWrapper>
+                  ))}
+                </PostsGrid>
+              </>
+            )}
+          </MainContent>
+        </HomeLayout>
+      </ContentSection>
+    </HomePage>
   );
 };
 
