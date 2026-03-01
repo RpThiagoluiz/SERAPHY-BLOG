@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
-import { getThemeColor, hexToRgba } from '../styles/themeColors';
-import { typographyVariants } from '../styles';
-import type { ThemeColorPath } from '../styles/themeColors';
-import type { TypographyVariantKey } from '../styles';
+import { getThemeColor, hexToRgba } from '../../styles/themeColors';
+import { typographyVariants } from '../../styles';
+import type { ThemeColorPath } from '../../styles/themeColors';
+import type { TypographyVariantKey } from '../../styles';
 
 export type TypographyVariant = TypographyVariantKey;
 

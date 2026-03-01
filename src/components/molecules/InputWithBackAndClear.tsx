@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import styled from 'styled-components';
 import { ArrowLeft, X } from 'lucide-react';
-import { Icon } from './Icon';
-import { Input } from './Input';
+import { Icon } from '../atoms/Icon';
+import { Input } from '../atoms/Input';
 
 export interface InputWithBackAndClearProps extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,

@@ -1,8 +1,8 @@
-import { Typography } from '../Typography';
-import { Badge } from '../Badge';
-import { themeColors } from '../../styles';
-import { formatPostDate } from '../../utils/date';
-import { extractExcerpt } from '../../utils/text';
+import { Typography } from '../../atoms/Typography';
+import { Badge } from '../../atoms/Badge';
+import { themeColors } from '../../../styles';
+import { formatPostDate } from '../../../utils/date';
+import { extractExcerpt } from '../../../utils/text';
 import type { PostCardProps } from './types';
 import {
   StyledLink,
@@ -37,12 +37,12 @@ export function PostCard({ post }: PostCardProps) {
         <StyledBody>
           <StyledHeader>
             <time dateTime={post.createdAt ?? ''}>
-              <Typography variant="bodySmall" color={themeColors.neutrals.dark}>
+              <Typography variant="caption" color={themeColors.neutrals.dark}>
                 {formattedDate}
               </Typography>
             </time>
             <StyledDot aria-hidden />
-            <Typography variant="bodySmall" color={themeColors.neutrals.dark}>
+            <Typography variant="caption" color={themeColors.neutrals.dark}>
               {authorName}
             </Typography>
           </StyledHeader>

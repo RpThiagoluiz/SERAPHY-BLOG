@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import type { LucideIcon } from 'lucide-react';
-import { typographyVariants } from '../styles';
+import { typographyVariants } from '../../styles';
 
 export type ButtonVariant = 'primary' | 'secondary';
 

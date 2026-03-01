@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { typographyVariants } from '../styles';
+import { typographyVariants } from '../../styles';
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   children: React.ReactNode;
@@ -16,7 +16,7 @@ const StyledBadge = styled.span`
   border-radius: ${BORDER_RADIUS}px;
   background-color: ${(props) => props.theme.colors.neutrals.extraLight};
   color: ${(props) => props.theme.colors.neutrals.darkest};
-  ${typographyVariants.bodySmall}
+  ${typographyVariants.caption}
 `;
 
 export function Badge({ children, ...rest }: BadgeProps) {

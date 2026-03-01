@@ -1,4 +1,4 @@
-import type { Post } from '../../api/types';
+import type { Post } from '../../../api/types';
 
 export interface PostCardProps {
   post: Post;

@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import type { LucideIcon } from 'lucide-react';
-import { getThemeColor } from '../styles';
-import type { Theme, ThemeColorPath } from '../styles';
+import { getThemeColor } from '../../styles';
+import type { Theme, ThemeColorPath } from '../../styles';
 
 export type IconSize = 'sm' | 'md';
 

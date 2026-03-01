@@ -8,16 +8,18 @@ import {
   ArrowUp,
   ArrowDown,
 } from 'lucide-react';
-import { Typography } from '../../components/Typography';
-import { Icon } from '../../components/Icon';
-import { Button } from '../../components/Button';
-import { Input } from '../../components/Input';
-import { InputWithBackAndClear } from '../../components/InputWithBackAndClear';
-import { SortItem } from '../../components/SortItem';
-import { FilterItem } from '../../components/FilterItem';
-import { Badge } from '../../components/Badge';
-import { SearchInputForm } from '../../components/SearchInputForm';
-import { PostCard } from '../../components/PostCard';
+import {
+  Typography,
+  Icon,
+  Button,
+  Input,
+  InputWithBackAndClear,
+  SortItem,
+  FilterItem,
+  Badge,
+  SearchInputForm,
+  PostCard,
+} from '../../components';
 import { postService } from '../../api/services';
 import { themeColors } from '../../styles';
 
