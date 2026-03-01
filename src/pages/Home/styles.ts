@@ -23,6 +23,14 @@ export const PageHeader = styled.header`
   `}
 `;
 
+export const PageHeaderLeft = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: ${(props) => props.theme.spacing.md};
+  flex-wrap: wrap;
+`;
+
 export const ContentSection = styled.section`
   display: flex;
   flex-direction: column;
@@ -35,8 +43,7 @@ export const FilterBar = styled.div`
   display: flex;
   flex-wrap: wrap-reverse;
   align-items: center;
-  gap: ${(props) => props.theme.spacing.sm};
-
+  gap: 4px;
   ${media.md`
     display: none;
     gap: ${(props) => props.theme.spacing.md};

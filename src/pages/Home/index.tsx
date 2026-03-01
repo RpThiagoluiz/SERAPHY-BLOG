@@ -2,11 +2,14 @@ import { useState, useMemo } from 'react';
 import { SlidersHorizontal } from 'lucide-react';
 import {
   Typography,
-  Button,
   PostCard,
+  PostCardSkeleton,
   Dropdown,
   SortItem,
   SelectionChip,
+  FilterBarSkeleton,
+  FiltersSkeleton,
+  EmptyPosts,
 } from '../../components';
 import type { SortOrder } from '../../components';
 import type { Post } from '../../api/types/post.types';
@@ -17,6 +20,7 @@ import { useErrorNotifications } from '../../hooks/useNotifications';
 import {
   HomePage,
   PageHeader,
+  PageHeaderLeft,
   ContentSection,
   FilterBar,
   FilterBarChips,
@@ -71,18 +75,21 @@ const Home = () => {
   const [appliedCategoryIds, setAppliedCategoryIds] = useState<string[]>([]);
   const [appliedAuthorIds, setAppliedAuthorIds] = useState<string[]>([]);
 
-  const [sidebarCategoryId, setSidebarCategoryId] = useState<string | null>(
-    null,
-  );
-  const [sidebarAuthorId, setSidebarAuthorId] = useState<string | null>(null);
-
   const {
     data: posts = [],
     isLoading: postsLoading,
     error: postsError,
   } = usePosts();
-  const { data: categories = [], error: categoriesError } = useCategories();
-  const { data: authors = [], error: authorsError } = useAuthors();
+  const {
+    data: categories = [],
+    isLoading: categoriesLoading,
+    error: categoriesError,
+  } = useCategories();
+  const {
+    data: authors = [],
+    isLoading: authorsLoading,
+    error: authorsError,
+  } = useAuthors();
 
   const errorNotifications = useMemo(
     () => [
@@ -107,22 +114,33 @@ const Home = () => {
     label: a.name ?? 'Author',
   }));
 
-  const handleMobileCategorySelect = (id: string) => {
+  const handleCategorySelect = (id: string) => {
     setAppliedCategoryIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   };
 
-  const handleMobileAuthorSelect = (id: string) => {
+  const handleAuthorSelect = (id: string) => {
     setAppliedAuthorIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
   };
 
-  const handleApplyFilters = () => {
-    setAppliedCategoryIds(sidebarCategoryId ? [sidebarCategoryId] : []);
-    setAppliedAuthorIds(sidebarAuthorId ? [sidebarAuthorId] : []);
+  const handleClearFilters = () => {
+    setAppliedCategoryIds([]);
+    setAppliedAuthorIds([]);
   };
+
+  const appliedFiltersLabel = [
+    ...appliedCategoryIds.map(
+      (id) => categoryOptions.find((o) => o.id === id)?.label ?? '',
+    ),
+    ...appliedAuthorIds.map(
+      (id) => authorOptions.find((o) => o.id === id)?.label ?? '',
+    ),
+  ]
+    .filter(Boolean)
+    .join(', ');
 
   const filteredAndSortedPosts = filterAndSortPosts(
     posts,
@@ -131,15 +149,26 @@ const Home = () => {
     sortOrder,
   );
 
-  const isLoading = postsLoading;
+  const isPostsLoading = postsLoading;
+  const isFiltersLoading = categoriesLoading || authorsLoading;
   const hasError = postsError || categoriesError || authorsError;
+  const hasNoPosts =
+    !isPostsLoading && !hasError && filteredAndSortedPosts.length === 0;
 
   return (
     <HomePage>
       <PageHeader as="header">
-        <Typography variant="h2" as="h1">
-          DWS Blog
-        </Typography>
+        <PageHeaderLeft>
+          <Typography variant="h2" as="h1">
+            DWS Blog
+          </Typography>
+          {(appliedCategoryIds.length > 0 || appliedAuthorIds.length > 0) && (
+            <SelectionChip
+              label={appliedFiltersLabel}
+              onRemove={handleClearFilters}
+            />
+          )}
+        </PageHeaderLeft>
         <SortRow>
           <Typography variant="bodySmall" as="span">
             Sort by:
@@ -149,104 +178,104 @@ const Home = () => {
       </PageHeader>
 
       <ContentSection as="section" aria-label="Filters and posts list">
-        <FilterBar>
-          <Dropdown
-            label="Category"
-            options={categoryOptions}
-            selectedIds={appliedCategoryIds}
-            onSelect={handleMobileCategorySelect}
-          />
-          <Dropdown
-            label="Author"
-            options={authorOptions}
-            selectedIds={appliedAuthorIds}
-            onSelect={handleMobileAuthorSelect}
-          />
-          <SortItem value={sortOrder} onChange={setSortOrder} />
-        </FilterBar>
+        {isFiltersLoading ? (
+          <FilterBarSkeleton />
+        ) : (
+          <FilterBar>
+            <Dropdown
+              label="Category"
+              options={categoryOptions}
+              selectedIds={appliedCategoryIds}
+              onSelect={handleCategorySelect}
+            />
+            <Dropdown
+              label="Author"
+              options={authorOptions}
+              selectedIds={appliedAuthorIds}
+              onSelect={handleAuthorSelect}
+            />
+            <SortItem value={sortOrder} onChange={setSortOrder} />
+          </FilterBar>
+        )}
         {(appliedCategoryIds.length > 0 || appliedAuthorIds.length > 0) && (
           <FilterBarChips>
             <SelectionChip
-              label={[
-                ...appliedCategoryIds.map(
-                  (id) => categoryOptions.find((o) => o.id === id)?.label ?? '',
-                ),
-                ...appliedAuthorIds.map(
-                  (id) => authorOptions.find((o) => o.id === id)?.label ?? '',
-                ),
-              ]
-                .filter(Boolean)
-                .join(', ')}
-              onRemove={() => {
-                setAppliedCategoryIds([]);
-                setAppliedAuthorIds([]);
-              }}
+              label={appliedFiltersLabel}
+              onRemove={handleClearFilters}
             />
           </FilterBarChips>
         )}
 
         <HomeLayout>
-          <Sidebar>
-            <SidebarTitle>
-              <SlidersHorizontal size={20} strokeWidth={2} aria-hidden />
-              <Typography variant="h3" as="h2">
-                Filters
-              </Typography>
-            </SidebarTitle>
-            <FilterSection>
-              <FilterSectionTitle>Category</FilterSectionTitle>
-              <FilterItemsList>
-                {categories.map((cat) => (
-                  <SidebarFilterItem
-                    key={cat.id}
-                    type="button"
-                    $isSelected={sidebarCategoryId === cat.id}
-                    onClick={() =>
-                      setSidebarCategoryId((prev) =>
-                        prev === cat.id ? null : cat.id,
-                      )
-                    }
-                  >
-                    {cat.name ?? 'Category'}
-                  </SidebarFilterItem>
-                ))}
-              </FilterItemsList>
-            </FilterSection>
-            <FilterSection>
-              <FilterSectionTitle>Author</FilterSectionTitle>
-              <FilterItemsList>
-                {authors.map((auth) => (
-                  <SidebarFilterItem
-                    key={auth.id}
-                    type="button"
-                    $isSelected={sidebarAuthorId === auth.id}
-                    onClick={() =>
-                      setSidebarAuthorId((prev) =>
-                        prev === auth.id ? null : auth.id,
-                      )
-                    }
-                  >
-                    {auth.name ?? 'Author'}
-                  </SidebarFilterItem>
-                ))}
-              </FilterItemsList>
-            </FilterSection>
-            <Button variant="primary" onClick={handleApplyFilters}>
-              Apply filters
-            </Button>
-          </Sidebar>
+          {isFiltersLoading ? (
+            <FiltersSkeleton />
+          ) : (
+            <Sidebar>
+              <SidebarTitle>
+                <SlidersHorizontal size={20} strokeWidth={2} aria-hidden />
+                <Typography variant="h3" as="h2">
+                  Filters
+                </Typography>
+              </SidebarTitle>
+              <FilterSection>
+                <FilterSectionTitle>Category</FilterSectionTitle>
+                <FilterItemsList>
+                  {categories.map((cat) => (
+                    <SidebarFilterItem
+                      key={cat.id}
+                      type="button"
+                      $isSelected={appliedCategoryIds.includes(cat.id)}
+                      onClick={() => handleCategorySelect(cat.id)}
+                    >
+                      {cat.name ?? 'Category'}
+                    </SidebarFilterItem>
+                  ))}
+                </FilterItemsList>
+              </FilterSection>
+              <FilterSection>
+                <FilterSectionTitle>Author</FilterSectionTitle>
+                <FilterItemsList>
+                  {authors.map((auth) => (
+                    <SidebarFilterItem
+                      key={auth.id}
+                      type="button"
+                      $isSelected={appliedAuthorIds.includes(auth.id)}
+                      onClick={() => handleAuthorSelect(auth.id)}
+                    >
+                      {auth.name ?? 'Author'}
+                    </SidebarFilterItem>
+                  ))}
+                </FilterItemsList>
+              </FilterSection>
+            </Sidebar>
+          )}
 
           <MainContent as="section" aria-label="Posts list">
-            {isLoading ? (
-              <LoadingContainer>
-                <Typography variant="bodySmall">Loading...</Typography>
-              </LoadingContainer>
+            {isPostsLoading ? (
+              <>
+                <PostsList>
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <PostCardWrapper key={i}>
+                      <PostCardSkeleton />
+                    </PostCardWrapper>
+                  ))}
+                </PostsList>
+                <PostsGrid>
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <PostCardWrapper key={i}>
+                      <PostCardSkeleton />
+                    </PostCardWrapper>
+                  ))}
+                </PostsGrid>
+              </>
             ) : hasError ? (
               <LoadingContainer>
                 <Typography variant="bodySmall">
                   Failed to load. Please check your connection.
                 </Typography>
               </LoadingContainer>
+            ) : hasNoPosts ? (
+              <EmptyPosts />
             ) : (
               <>
                 <PostsList>
