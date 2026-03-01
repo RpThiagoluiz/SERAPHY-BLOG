@@ -39,3 +39,8 @@ The application will be available at: **http://localhost:5173**
   <img src="docs/images/searchInputForm.png" alt="Search Input Form" width="600" />
   <figcaption>Search Input Form</figcaption>
 </figure
+
+<figure>
+  <img src="docs/images/badge.png" alt="Search Input Form" width="600" />
+  <figcaption>Badge</figcaption>
+</figure

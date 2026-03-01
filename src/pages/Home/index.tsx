@@ -15,6 +15,7 @@ import { Input } from '../../components/Input';
 import { InputWithBackAndClear } from '../../components/InputWithBackAndClear';
 import { SortItem } from '../../components/SortItem';
 import { FilterItem } from '../../components/FilterItem';
+import { Badge } from '../../components/Badge';
 import { SearchInputForm } from '../../components/SearchInputForm';
 import { themeColors } from '../../styles';
 
@@ -38,6 +39,19 @@ const ButtonDemo = styled.div`
 `;
 
 const SortDemo = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: ${(props) => props.theme.spacing.lg};
+`;
+
+const BadgeDemo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${(props) => props.theme.spacing.md};
+`;
+
+const BadgeDemoRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -157,6 +171,18 @@ const Home = () => {
           Back
         </Button>
       </ButtonDemo>
+
+      <BadgeDemo>
+        <Typography variant="h2" color={themeColors.primary.dark}>
+          Badge
+        </Typography>
+        <BadgeDemoRow>
+          <Badge>Category</Badge>
+          <Badge>Category 1</Badge>
+          <Badge>Category 2</Badge>
+          <Badge>Category 3</Badge>
+        </BadgeDemoRow>
+      </BadgeDemo>
 
       <SortDemo>
         <SortItem label="Newest first" icon={ArrowUpDown} />
