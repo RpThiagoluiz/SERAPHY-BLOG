@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import type { LucideIcon } from 'lucide-react';
 import { ArrowUpDown } from 'lucide-react';
-import { typographyVariants } from '../../styles';
+import { media, typographyVariants } from '../../styles';
 
 const ICON_SIZE = 16;
 const GAP = 8;
@@ -35,7 +35,7 @@ const StyledSortItem = styled.button`
   border-radius: ${(props) => props.theme.radii.pill};
   background-color: transparent;
   color: ${(props) => props.theme.colors.neutrals.extraDark};
-  ${typographyVariants.bodySmall}
+  ${typographyVariants.caption}
   cursor: pointer;
   transition: ${(props) => props.theme.transition.interactive};
 
@@ -48,6 +48,10 @@ const StyledSortItem = styled.button`
     outline: 2px solid ${(props) => props.theme.colors.accent.medium};
     outline-offset: 2px;
   }
+
+  ${media.md`
+    ${typographyVariants.bodySmall}
+  `}
 `;
 
 const StyledIcon = styled.span`
