@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import type { LucideIcon } from 'lucide-react';
+import { ArrowUpDown } from 'lucide-react';
 import { typographyVariants } from '../../styles';
 
 const ICON_SIZE = 16;
@@ -7,8 +9,20 @@ const GAP = 8;
 const PADDING_VERTICAL = 8;
 const PADDING_HORIZONTAL = 16;
 
-export interface SortItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  label: string;
+export type SortOrder = 'newest' | 'oldest';
+
+const SORT_LABELS: Record<SortOrder, string> = {
+  newest: 'Newest first',
+  oldest: 'Oldest first',
+};
+
+export interface SortItemProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  'onChange'
+> {
+  value?: SortOrder;
+  onChange?: (value: SortOrder) => void;
+  label?: string;
   icon?: LucideIcon;
 }
 
@@ -50,12 +64,29 @@ const StyledIcon = styled.span`
 `;
 
 export function SortItem({
-  label,
-  icon: IconComponent,
+  value: controlledValue,
+  onChange,
+  label: labelProp,
+  icon: IconComponent = ArrowUpDown,
+  onClick,
   ...rest
 }: SortItemProps) {
+  const [internalValue, setInternalValue] = useState<SortOrder>('newest');
+  const value = controlledValue ?? internalValue;
+  const label = labelProp ?? SORT_LABELS[value];
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const nextValue: SortOrder = value === 'newest' ? 'oldest' : 'newest';
+    if (onChange) {
+      onChange(nextValue);
+    } else {
+      setInternalValue(nextValue);
+    }
+    onClick?.(e);
+  };
+
   return (
-    <StyledSortItem type="button" {...rest}>
+    <StyledSortItem type="button" onClick={handleClick} {...rest}>
       {label}
       {IconComponent && (
         <StyledIcon aria-hidden>
