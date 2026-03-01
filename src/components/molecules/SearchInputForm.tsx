@@ -27,6 +27,7 @@ const StyledContainer = styled.div`
 
 const SearchInput = styled(Input)`
   padding-right: 48px;
+  background-color: ${(props) => props.theme.colors.neutrals.lightest};
 `;
 
 const StyledSearchButton = styled.button`

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { X } from 'lucide-react';
+import { Icon } from '../atoms/Icon';
 import { hexToRgba } from '../../styles';
 
 export interface SelectionChipProps {
@@ -7,7 +8,6 @@ export interface SelectionChipProps {
   onRemove: () => void;
 }
 
-const ICON_SIZE = 16;
 const GAP = 8;
 const PADDING_VERTICAL = 8;
 const PADDING_HORIZONTAL = 12;
@@ -72,7 +72,7 @@ export function SelectionChip({ label, onRemove }: SelectionChipProps) {
         onClick={onRemove}
         aria-label="Clean selection"
       >
-        <X size={ICON_SIZE} strokeWidth={2} aria-hidden />
+        <Icon icon={X} size="sm" aria-hidden />
       </RemoveButton>
     </StyledChip>
   );
