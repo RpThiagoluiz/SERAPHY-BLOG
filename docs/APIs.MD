@@ -15,6 +15,16 @@
 
 ---
 
+## Response Format
+
+The API returns compatible format for the Home page:
+
+- **Posts**: Array of objects with `id`, `title`, `content`, `thumbnail_url`, `authorId`, `createdAt`, `updatedAt`, `categories`, `author`
+- **Categories**: Array of objects with `id`, `name`, `postId`, `createdAt`, `updatedAt`
+- **Authors**: Array of objects with `id`, `name`, `profilePicture`, `createdAt`, `updatedAt`
+
+---
+
 ## Response handling
 
 The API may not always return data in the expected format. Services use type guards to safely parse responses and return empty arrays or `null` when the response is invalid.

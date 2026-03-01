@@ -54,6 +54,7 @@ Focus on the requested "Pixel Perfect" implementation.
 
 Where you earn the bonus points.
 
+- **Skeleton**: Add loading skeleton.
 - **Unit Tests (Vitest)**: Create tests for the most critical components (e.g., Post Card or Header).
 - **Accessibility (A11y)**: Review that tags are semantic and images have alt text.
 - **Performance Check**: Verify that React Query is correctly caching authors and categories to avoid multiple requests.

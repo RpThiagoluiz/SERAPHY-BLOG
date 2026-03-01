@@ -22,6 +22,7 @@ src/
 │   ├── organisms/  # Complex UI sections
 │   └── index.ts    # Barrel exports
 ├── context/        # Context API providers
+│   └── SearchContext.tsx   # Search state, last searches (localStorage), URL sync
 ├── hooks/          # Custom hooks that consume the services (usePosts, useAuthor)
 ├── pages/          # Main views (Home/Feed and PostDetail)
 │   ├── Home/
@@ -29,6 +30,12 @@ src/
 │   └── PostDetails/
 │       └── index.tsx
 ├── routes.tsx      # Register page routers
+├── test/           # Test utilities and shared mocks
+│   ├── mocks/      # Reusable fixtures and hook mocks
+│   │   ├── fixtures.ts  # mockPost, mockCategory, mockAuthor
+│   │   ├── homeMocks.ts # vi.mock for usePosts, useCategories, useAuthors
+│   │   └── index.ts    # Barrel exports
+│   └── setup.ts    # Vitest setup (matchMedia, jest-dom)
 ├── App.tsx
 ├── styles/         # styled-components base
 │   ├── theme.ts          # Design tokens (colors, typography, spacing, breakpoints)
@@ -130,3 +137,31 @@ flowchart TD
 4. **`constants/`** — Centralized query keys per domain for React Query cache and invalidation.
 
 5. **`types/`** — API-specific types and interfaces, separate from global `@types`.
+
+---
+
+## Test Mocks
+
+Shared mocks live in `src/test/mocks/` for reuse across Home, PostDetails, and other tests.
+
+| File | Purpose |
+|------|---------|
+| **`fixtures.ts`** | Mock data only: `mockPost`, `mockCategory`, `mockAuthor`. Import when you need data without hook mocks. |
+| **`homeMocks.ts`** | `vi.mock` for `usePosts`, `useCategories`, `useAuthors`, `useErrorNotifications`. Re-exports fixtures. Import before hooks for tests that use the Home page. |
+| **`index.ts`** | Barrel exports for convenience. |
+
+**Usage example (Home.test.tsx):**
+
+```ts
+import '../../test/mocks/homeMocks';  // must be before other imports
+import { mockPost, mockCategory, mockAuthor } from '../../test/mocks/fixtures';
+import { usePosts } from '../../hooks/usePosts';
+import { useCategories } from '../../hooks/useCategories';
+import { useAuthors } from '../../hooks/useAuthors';
+```
+
+**Usage example (other tests needing only data):**
+
+```ts
+import { mockPost } from '../../test/mocks/fixtures';
+```

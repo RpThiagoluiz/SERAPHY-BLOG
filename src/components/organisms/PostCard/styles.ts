@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { media } from '../../../styles';
 
 const CARD_WIDTH = 314;
 const CARD_HEIGHT = 425;
@@ -21,12 +22,16 @@ export const StyledLink = styled(Link)`
 export const StyledArticle = styled.article`
   display: flex;
   flex-direction: column;
-  width: ${CARD_WIDTH}px;
+  width: 100%;
   height: ${CARD_HEIGHT}px;
   border-radius: ${(props) => props.theme.radii.xl};
   background-color: ${(props) => props.theme.colors.neutrals.lightest};
   border: 1px solid ${(props) => props.theme.colors.neutrals.extraLight};
   overflow: hidden;
+  ${media.md`
+    width: ${CARD_WIDTH}px;
+    height: ${CARD_HEIGHT}p
+  `}
 `;
 
 export const StyledImage = styled.img`

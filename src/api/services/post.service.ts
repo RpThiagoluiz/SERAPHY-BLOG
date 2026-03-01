@@ -11,12 +11,18 @@ function isPost(value: unknown): value is Post {
   return value !== null && typeof value === 'object';
 }
 
+export interface PostFilters {
+  categoryId?: string;
+  authorId?: string;
+}
+
 export const postService = {
-  useGetPosts: (filters: Record<string, unknown> = {}) => {
+  useGetPosts: (filters: PostFilters | Record<string, unknown> = {}) => {
+    const params = filters as Record<string, unknown>;
     return useQuery<Post[]>({
-      queryKey: QUERY_KEYS.posts.list(filters),
+      queryKey: QUERY_KEYS.posts.list(params),
       queryFn: async () => {
-        const { data } = await api.get<unknown>('/posts', { params: filters });
+        const { data } = await api.get<unknown>('/posts', { params });
         return isPostArray(data) ? data : [];
       },
     });

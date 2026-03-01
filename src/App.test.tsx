@@ -5,6 +5,6 @@ import App from './App';
 
 it('test if App renders correctly', async () => {
   render(<App />);
-  const title = await screen.findByText(/Seraphy Blog/i);
+  const title = await screen.findByText(/Blog/i);
   expect(title).toBeInTheDocument();
 });
