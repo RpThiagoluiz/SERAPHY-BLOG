@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { SlidersHorizontal } from 'lucide-react';
 import {
   Typography,
@@ -13,10 +13,13 @@ import {
 } from '../../components';
 import type { SortOrder } from '../../components';
 import type { Post } from '../../api/types/post.types';
+import { useSearch } from '../../context/useSearch';
 import { usePosts } from '../../hooks/usePosts';
 import { useCategories } from '../../hooks/useCategories';
 import { useAuthors } from '../../hooks/useAuthors';
+import { useFiltersFromUrl } from '../../hooks/useFiltersFromUrl';
 import { useErrorNotifications } from '../../hooks/useNotifications';
+import { matchesSearch } from '../../utils/text';
 import {
   HomePage,
   PageHeader,
@@ -44,8 +47,21 @@ function filterAndSortPosts(
   categoryIds: string[],
   authorIds: string[],
   sortOrder: SortOrder,
+  searchQuery: string,
 ): Post[] {
   let filtered = posts;
+
+  if (searchQuery.trim()) {
+    filtered = filtered.filter((p) =>
+      matchesSearch(
+        searchQuery,
+        p.title,
+        p.content,
+        p.author?.name,
+        ...(p.categories?.map((c) => c.name) ?? []),
+      ),
+    );
+  }
 
   if (categoryIds.length > 0) {
     filtered = filtered.filter(
@@ -70,10 +86,16 @@ function filterAndSortPosts(
 }
 
 const Home = () => {
-  const [sortOrder, setSortOrder] = useState<SortOrder>('newest');
-
-  const [appliedCategoryIds, setAppliedCategoryIds] = useState<string[]>([]);
-  const [appliedAuthorIds, setAppliedAuthorIds] = useState<string[]>([]);
+  const { searchQuery } = useSearch();
+  const {
+    categoryIds: appliedCategoryIds,
+    authorIds: appliedAuthorIds,
+    sortOrder,
+    setCategoryIds,
+    setAuthorIds,
+    setSortOrder,
+    clearAllFilters,
+  } = useFiltersFromUrl();
 
   const {
     data: posts = [],
@@ -115,23 +137,30 @@ const Home = () => {
   }));
 
   const handleCategorySelect = (id: string) => {
-    setAppliedCategoryIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    setCategoryIds(
+      appliedCategoryIds.includes(id)
+        ? appliedCategoryIds.filter((x) => x !== id)
+        : [...appliedCategoryIds, id],
     );
   };
 
   const handleAuthorSelect = (id: string) => {
-    setAppliedAuthorIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    setAuthorIds(
+      appliedAuthorIds.includes(id)
+        ? appliedAuthorIds.filter((x) => x !== id)
+        : [...appliedAuthorIds, id],
     );
   };
 
-  const handleClearFilters = () => {
-    setAppliedCategoryIds([]);
-    setAppliedAuthorIds([]);
-  };
+  const handleClearFilters = clearAllFilters;
+
+  const hasActiveFilters =
+    appliedCategoryIds.length > 0 ||
+    appliedAuthorIds.length > 0 ||
+    searchQuery.trim().length > 0;
 
   const appliedFiltersLabel = [
+    ...(searchQuery.trim() ? [`"${searchQuery}"`] : []),
     ...appliedCategoryIds.map(
       (id) => categoryOptions.find((o) => o.id === id)?.label ?? '',
     ),
@@ -147,6 +176,7 @@ const Home = () => {
     appliedCategoryIds,
     appliedAuthorIds,
     sortOrder,
+    searchQuery,
   );
 
   const isPostsLoading = postsLoading;
@@ -162,7 +192,7 @@ const Home = () => {
           <Typography variant="h2" as="h1">
             DWS Blog
           </Typography>
-          {(appliedCategoryIds.length > 0 || appliedAuthorIds.length > 0) && (
+          {hasActiveFilters && (
             <SelectionChip
               label={appliedFiltersLabel}
               onRemove={handleClearFilters}
@@ -197,7 +227,7 @@ const Home = () => {
             <SortItem value={sortOrder} onChange={setSortOrder} />
           </FilterBar>
         )}
-        {(appliedCategoryIds.length > 0 || appliedAuthorIds.length > 0) && (
+        {hasActiveFilters && (
           <FilterBarChips>
             <SelectionChip
               label={appliedFiltersLabel}

@@ -114,3 +114,48 @@ export const StyledSearchOverlayContent = styled.div`
   padding: ${(props) => props.theme.spacing.md};
   border-bottom: 1px solid ${(props) => props.theme.colors.neutrals.extraLight};
 `;
+
+export const StyledLastSearches = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: ${(props) => props.theme.spacing.sm};
+  padding: ${(props) => props.theme.spacing.md};
+  flex: 1;
+  overflow-y: auto;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+`;
+
+export const StyledLastSearchesTitle = styled.h2`
+  margin: 0;
+  font-size: ${(props) => props.theme.typography.caption.size};
+  font-weight: 600;
+  color: ${(props) => props.theme.colors.neutrals.medium};
+`;
+
+export const StyledLastSearchItem = styled.button`
+  display: block;
+  width: 100%;
+  padding: ${(props) => props.theme.spacing.sm}
+    ${(props) => props.theme.spacing.md};
+  border: none;
+  border-radius: ${(props) => props.theme.radii.md};
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: ${(props) => props.theme.transition.interactive};
+  color: ${(props) => props.theme.colors.neutrals.darkest};
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.neutrals.extraLight};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${(props) => props.theme.colors.accent.medium};
+    outline-offset: 2px;
+  }
+`;
