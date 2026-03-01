@@ -1,5 +1,6 @@
 import { Typography } from '../../atoms/Typography';
 import { Badge } from '../../atoms/Badge';
+import { ImageWithFallback } from '../../molecules/ImageWithFallback';
 import { themeColors } from '../../../styles';
 import { formatPostDate } from '../../../utils/date';
 import { extractExcerpt } from '../../../utils/text';
@@ -7,8 +8,6 @@ import type { PostCardProps } from './types';
 import {
   StyledLink,
   StyledArticle,
-  StyledImage,
-  StyledImagePlaceholder,
   StyledBody,
   StyledHeader,
   StyledDot,
@@ -26,14 +25,11 @@ export function PostCard({ post }: PostCardProps) {
   return (
     <StyledLink to={`/post/${post.id}`}>
       <StyledArticle>
-        {post.thumbnail_url ? (
-          <StyledImage
-            src={post.thumbnail_url}
-            alt={post.title ?? 'Post thumbnail'}
-          />
-        ) : (
-          <StyledImagePlaceholder aria-hidden />
-        )}
+        <ImageWithFallback
+          src={post.thumbnail_url}
+          alt={post.title ?? 'Post thumbnail'}
+          height={196}
+        />
         <StyledBody>
           <StyledHeader>
             <time dateTime={post.createdAt ?? ''}>

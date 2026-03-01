@@ -8,7 +8,9 @@ const IMAGE_HEIGHT = 196;
 export const SkeletonCard = styled.article`
   display: flex;
   flex-direction: column;
-  width: ${CARD_WIDTH}px;
+  width: 100%;
+  max-width: 100%;
+  max-width: ${CARD_WIDTH}px;
   height: ${CARD_HEIGHT}px;
   border-radius: ${(props) => props.theme.radii.xl};
   background-color: ${(props) => props.theme.colors.neutrals.lightest};

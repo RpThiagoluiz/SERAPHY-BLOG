@@ -6,3 +6,4 @@ export { FilterBarSkeleton, FiltersSkeleton } from './FiltersSkeleton';
 export { Header } from './Header';
 export { PostCard } from './PostCard';
 export { PostCardSkeleton } from './PostCardSkeleton';
+export { PostDetailsSkeleton } from './PostDetailsSkeleton';
