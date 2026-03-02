@@ -2,6 +2,8 @@
 
 A modern blog application built with React, featuring post listing, search, filtering, and detailed post views.
 
+**Live:** [https://seraphy-blog-g06mrgcrk-thiago-luiz-gonalves-projects.vercel.app/](https://seraphy-blog-g06mrgcrk-thiago-luiz-gonalves-projects.vercel.app/)
+
 ## Tech Stack
 
 - **React 19** + **TypeScript**
