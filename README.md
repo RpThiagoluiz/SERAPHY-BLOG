@@ -37,7 +37,7 @@ cp .env.example .env
 3. Set your API URL in `.env`:
 
 ```
-VITE_API_URL=https://your-api-url.com
+VITE_API_URL=https://tech-test-backend.dwsbrazil.io
 ```
 
 4. Start the development server:
